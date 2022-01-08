@@ -1,7 +1,6 @@
 package lesson16;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
+@RequiredArgsConstructor
 public class Logger implements Runnable {
     private static final String FORMAT_TEXT = "%s %s %s %s\n";
     private static final DateTimeFormatter FULL_DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyy HH:mm:ss");
@@ -23,7 +23,7 @@ public class Logger implements Runnable {
     public void run() {
         System.out.printf("Начал работу поток %s/n", Thread.currentThread().getName());
         while (System.currentTimeMillis() <= currentTimeMillis + LIFETIME) { //время работы потока ограничено одной минутой
-            try (FileWriter fw = new FileWriter((fileName, true)) {
+            try (FileWriter fw = new FileWriter(fileName, true)) {
                 fw.write(generateString());
                 Thread.sleep(new Random().nextInt(5_000));
             } catch (IOException | InterruptedException exception){

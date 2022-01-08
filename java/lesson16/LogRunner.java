@@ -18,13 +18,13 @@ public class LogRunner {
         List<Thread> threads = IntStream.range(0, 3).boxed().map(i -> {
             final LogLevel[] logLevels = LogLevel.values();
             Logger logger = new Logger(logLevels[new Random().nextInt(logLevels.length)], FILE_NAME);
-            return new Thread(logger);
+            return new Thread((Runnable) logger);
         }).peek(Thread::start).collect(Collectors.toList());
         for (Thread thread : threads) {
             thread.join();
         }
         try (FileReader fr = new FileReader(FILE_NAME)){
-            IOUtils.copy (fr, System.out);
+            IOUtils.copy(fr, (Appendable) System.out);
         }
     }
 }
